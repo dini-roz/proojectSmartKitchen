@@ -1,43 +1,22 @@
-// import { useState } from 'react'
 
-// import './App.css'
-// import Login from './comp/Login'
-// import { BrowserRouter } from 'react-router';
-// import Signup from './comp/Signup'
-// import { QueryClient } from '@tanstack/react-query';
-// import React from 'react';
-// import { Provider } from 'react-redux';
-// import { store } from './app/store';
-
-// function App() {
-// const queryClient=new QueryClient();
-
-//   return (
-//    <>
-//        <Provider store={store}>
-//     <Signup />
-//   </Provider>,
-//    </>
-
-
-  
-
-
-  
-//   )  
-// }
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom'; // ייבא BrowserRouter
+import { BrowserRouter, Route, Routes } from 'react-router-dom'; // ייבא BrowserRouter
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import Signup from './features/users/components/Signup'; // או כל קומפוננטה אחרת שמשתמשת ב-Link
+import LandingPage from './comp/LandingPage';
 
 function App() {
   return (
     <>
       <Provider store={store}>
         <BrowserRouter> {/* עטוף את התוכן שלך ב-BrowserRouter */}
-          <Signup /> {/* או כל קומפוננטה אחרת שמשתמשת ב-Link */}
+          <Routes>
+        <Route path="/" element={<LandingPage />} /> {/* דף הנחיתה כעמוד הבית */}
+        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/signup" element={<Signup />} />
+        {/* ... שאר ה-Routes שלך ... */}
+      </Routes>
         </BrowserRouter>
       </Provider>
     </>
