@@ -22,6 +22,15 @@ export const userApi = api.injectEndpoints({
       }),
       invalidatesTags: ['User'], 
     }),
+      login: builder.mutation<any, Object>({
+      query: (credentials) => ({
+        url: 'login',
+        method: 'POST',
+        body: credentials, 
+      }),
+      //
+      invalidatesTags: ['User'], 
+          }),
   }),
   overrideExisting: false, 
 });
@@ -30,5 +39,6 @@ export const userApi = api.injectEndpoints({
 export const { 
   useGetUserQuery, 
   useUpdateUserMutation, 
-  useCreateUserMutation 
+  useCreateUserMutation ,
+  useLoginMutation
 } = userApi;
