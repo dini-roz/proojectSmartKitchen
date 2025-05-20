@@ -55,19 +55,13 @@ exports.loginUser = async (req, res) => {
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
+       
         if (!isPasswordValid) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
-
-        // אם האימייל והסיסמה נכונים, צור טוקן JWT
-        const token = jwt.sign(
-            { userId: user._id },
-            process.env.JWT_SECRET || 'secretKey', // מומלץ להשתמש במשתנה סביבה
-            { expiresIn: '1h' }
-        );
-
-        res.status(200).json({ token, userId: user._id, message: 'Logged in successfully' });
-
+        // res.status(200).json({user.password},message:'token from schema'});
+        res.status(200).json({ password: user.password,  message: 'token from schema'  });
+        console.log(user.password)
     } catch (error) {
         console.error("Error during login:", error);
         res.status(500).json({ message: "Error during login", error: error.message });

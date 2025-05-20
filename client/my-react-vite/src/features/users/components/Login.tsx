@@ -2,13 +2,14 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
-import { z } from 'zod';
+// import { z } from 'zod';
 import { TextField, Button, Typography, Container, Paper, Grid } from '@mui/material';
- import { useLoginMutation } from '../api/userApi'; 
+ import { useLoginMutation,useGetUserQuery } from '../api/userApi'; 
 import { LoginSchema, LoginFormData } from '../schema/LoginSchema'
 
 const Login: React.FC = () => {
-   const [login, { }] = useLoginMutation(); 
+   const [login] = useLoginMutation();
+   const [getUser,] =useGetUserQuery();
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(LoginSchema),
@@ -20,7 +21,9 @@ const Login: React.FC = () => {
      try {
        const result = await login(data).unwrap();
        console.log('התחברת בהצלחה!', result);
-         navigate('/recipes'); 
+       const userId = result.password;
+       console.log(userId)   ;   
+         navigate(`/${userId}`); 
   
     //   navigate('/dashboard');
     } catch (err) {
