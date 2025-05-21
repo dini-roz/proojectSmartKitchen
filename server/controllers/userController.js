@@ -60,7 +60,7 @@ exports.loginUser = async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
         // res.status(200).json({user.password},message:'token from schema'});
-        res.status(200).json({ password: user.password,  message: 'token from schema'  });
+        res.status(200).json({ password: user.password,   username: user.username, message: 'token from schema'  });
         console.log(user.password)
     } catch (error) {
         console.error("Error during login:", error);

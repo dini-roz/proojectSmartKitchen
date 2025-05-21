@@ -19,7 +19,8 @@ const LandingPageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 50px;
+  ///////
+  padding: 280px;
   text-align: center;
 `;
 

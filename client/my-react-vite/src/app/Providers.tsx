@@ -6,12 +6,10 @@ const Providers = () => {
   return (
    <>
     <Provider store={store}>
-
     <RouterProvider router={router} />
     </Provider>
    </>
-  
-  )
+    )
   };
   
   export default Providers;

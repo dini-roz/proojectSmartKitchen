@@ -4,12 +4,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 // import { z } from 'zod';
 import { TextField, Button, Typography, Container, Paper, Grid } from '@mui/material';
- import { useLoginMutation,useGetUserQuery } from '../api/userApi'; 
+ import { useLoginMutation } from '../api/userApi'; 
 import { LoginSchema, LoginFormData } from '../schema/LoginSchema'
 
 const Login: React.FC = () => {
    const [login] = useLoginMutation();
-   const [getUser,] =useGetUserQuery();
+  // const [getUser,] =useGetUserQuery();
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(LoginSchema),
@@ -21,11 +21,11 @@ const Login: React.FC = () => {
      try {
        const result = await login(data).unwrap();
        console.log('התחברת בהצלחה!', result);
-       const userId = result.password;
-       console.log(userId)   ;   
-         navigate(`/${userId}`); 
+      //  const userId = result.password;
+      //  console.log(userId)   ;   
+        navigate(`/${result.username}`); 
   
-    //   navigate('/dashboard');
+       //navigate('/');
     } catch (err) {
      console.error('התחברות נכשלה:', err);
         console.error('התחברות נכשלה:', err);

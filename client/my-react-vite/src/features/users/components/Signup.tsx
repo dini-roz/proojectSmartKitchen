@@ -1,12 +1,13 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router'; 
 import { z } from 'zod';
 import { TextField, Button, Typography, Container, Paper, Grid } from '@mui/material';
 import {useCreateUserMutation} from '../api/userApi'
 import {SignupSchema,SignupFormData } from '../schema/schemaUser'
 const Signup: React.FC = () => {
+       const navigate = useNavigate();
  const [createUser, error ] = useCreateUserMutation();
  const { register, handleSubmit, formState: { errors } } = useForm<SignupFormData>({
     resolver: zodResolver(SignupSchema), 
@@ -28,6 +29,8 @@ const Signup: React.FC = () => {
            };
             await createUser(userDataToSend).unwrap();
             console.log('User created successfully');
+            
+               navigate(`/${data.username}`);
         } catch (err) {
             console.error('Failed to create user: ',err);
         }
