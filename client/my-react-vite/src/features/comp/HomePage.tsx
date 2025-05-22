@@ -1,17 +1,32 @@
 import { Link, useNavigate, useParams } from 'react-router';
+import { useState} from "react"
 import {Grid} from "@mui/material"
 import { Navigate } from 'react-router';
 import AddItemUser from '../item/AddItemUser';
 const HomePage: React.FC = () => {
   const { homePageid } = useParams<{ homePageid: string }>();
-    //  const navigate = useNavigate();
-    //      {navigate("/AddItemUser") }
-  // Now you can use the homePageid to fetch user data, etc.
+  const [showAddItem, setShowAddItem] = useState<boolean>(false);
+  const [showAddFood,setShowAddFood]=useState<boolean>(false);
+  const [showShopingList,setShowShopingList]=useState<boolean>(false);
+ 
   return (
  <>
   <h1>Welcome to HomePage of user {homePageid}</h1>
-      <AddItemUser></AddItemUser>
+ 
+  <div>
+      {!showAddItem && <button onClick={()=>setShowAddItem(true)}>הוספת מוצר</button>}
+      {showAddItem && <AddItemUser />}
+    </div>
+    <div>
+      {!showAddFood && <button onClick={()=>setShowAddFood(true)}>הוספת מוצר</button>}
+      { showAddFood&& <AddItemUser />}
+    </div>
+    <div>
+      {!showShopingList && <button onClick={()=>setShowShopingList(true)}>הוספת מוצר</button>}
+      {showShopingList && <AddItemUser />}
+    </div>
  </>
+ 
      
 
         )

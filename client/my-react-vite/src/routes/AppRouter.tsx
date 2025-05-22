@@ -4,6 +4,9 @@ import Signup from "../features/users/components/Signup"
 import Login from "../features/users/components/Login"
 import UserAppLayout from "../common/UserAppLayout"
 import HomePage from "../features/comp/HomePage";
+import ShoppingList from "../features/comp/ShoppingList"
+import Items from "../features/comp/Items"
+import Foods from "../features/comp/Foods"
 import AddItemUser from "../features/item/AddItemUser"
 import { Children } from "react";
 const router = createBrowserRouter([
@@ -22,9 +25,11 @@ const router = createBrowserRouter([
          element: <UserAppLayout/>, // רכיב מגן שישמש ליתר הניתובים רק לאחר הרשמה/כניסה
       children: [
         { path:":homePageid", element: <HomePage /> }, // דף הבית
-        { path:":homePageid/add-item", element: <AddItemUser /> }, // נתיב להוספת מוצר
+        { path:"shoppingList", element: <ShoppingList /> }, 
+        { path:"items", element: <Items /> },
+        { path:"foods", element: <Foods /> },// נתיב להוספת מוצר
       ],
-  
+   
      },
 
 

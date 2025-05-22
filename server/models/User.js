@@ -41,11 +41,6 @@ const UserSchema = new mongoose.Schema({
     shoppingList: [{
         itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Item' },
 
-        purchaseDay: {
-            type: String,
-            enum: ['1', '2', '3', '4', '5'],
-            default: "1",
-        },
     }],
     food: [{
         mealId: { type: mongoose.Schema.Types.ObjectId, ref: 'Food' }

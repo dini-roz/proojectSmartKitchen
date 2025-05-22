@@ -2,7 +2,7 @@
  import React, { useState } from 'react'; 
  import { TextField, Button, Container, Paper, Typography, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
  import { useAddItemMutation, useUploadImageMutation } from "./itemApi "; // נניח שזה הנתיב הנכון ל-itemApi
- import { useParams } from 'react-router-dom';
+ import { useParams } from  "react-router"
  import { useForm, SubmitHandler } from 'react-hook-form';
  import { zodResolver } from '@hookform/resolvers/zod';
  import { AddItemSchema, AddItemFormDataZod } from './schema/AddItemSchema ' // נתיב לסכמת Zod

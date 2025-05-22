@@ -14,7 +14,9 @@ const Header = () => {
       <Button  component={Link} to="/shoppingList">
       רשימת קניות
     </Button>    
-    
+    <Button  component={Link} to="/homePageid">
+    דף הבית
+    </Button>   
     </> 
   );
 };
