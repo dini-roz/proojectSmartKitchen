@@ -6,8 +6,11 @@ import { z } from 'zod';
 import { TextField, Button, Typography, Container, Paper, Grid } from '@mui/material';
 import {useCreateUserMutation} from '../api/userApi'
 import {SignupSchema,SignupFormData } from '../schema/schemaUser'
+import { useAppDispatch } from '../../../app/hooks/useAppDispatch';
+import { setCredentials } from '../api/authSlice';
 const Signup: React.FC = () => {
        const navigate = useNavigate();
+        const dispatch = useAppDispatch(); 
  const [createUser, error ] = useCreateUserMutation();
  const { register, handleSubmit, formState: { errors } } = useForm<SignupFormData>({
     resolver: zodResolver(SignupSchema), 
@@ -27,9 +30,17 @@ const Signup: React.FC = () => {
                     CVV: data.CVV,
                 },
            };
-            await createUser(userDataToSend).unwrap();
-            console.log('User created successfully');
-            
+            const result=  await createUser(userDataToSend).unwrap();
+            console.log("r",result.username)         
+               console.log('User created successfully');
+                    dispatch(
+                       setCredentials({
+                         password: result.password, 
+                         username: result.username, 
+                         userid: result.userid,  
+                       })
+                );
+              
                navigate(`/${data.username}`);
         } catch (err) {
             console.error('Failed to create user: ',err);

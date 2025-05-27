@@ -1,11 +1,11 @@
 
  import React, { useState } from 'react'; 
  import { TextField, Button, Container, Paper, Typography, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
- import { useAddItemMutation, useUploadImageMutation } from "./itemApi "; // נניח שזה הנתיב הנכון ל-itemApi
- import { useParams } from  "react-router"
+ import { useAddItemMutation, useUploadImageMutation } from "./itemApi "; 
+ //import { useParams } from  "react-router"
  import { useForm, SubmitHandler } from 'react-hook-form';
  import { zodResolver } from '@hookform/resolvers/zod';
- import { AddItemSchema, AddItemFormDataZod } from './schema/AddItemSchema ' // נתיב לסכמת Zod
+ import { AddItemSchema, AddItemFormDataZod } from './schema/AddItemSchema '
  import { useDispatch, useSelector } from 'react-redux';
 import {
   setFormSubmitting,
@@ -14,6 +14,8 @@ import {
   selectIsFormSubmitted,
   selectSubmissionError,
 } from './itemFormSlice';
+import { useAppSelector } from '../../app/hooks/useAppSelector';
+import { selectCurrentUserName } from '../users/api/authSlice';
 
 const categories = ['ירקות', 'פירות', 'חלב', 'דגנים', 'קטניות'];
 
@@ -33,8 +35,8 @@ const AddItemUser: React.FC = () => {
 
   const [addItem, { isLoading: isAddingItem, isSuccess, isError, error }] = useAddItemMutation();
   const [uploadImage, { isLoading: isUploadingImage, error: uploadError }] = useUploadImageMutation();
-  const { homePageid } = useParams();
-
+  //const { homePageid } = useParams();
+   const homePageid = useAppSelector(selectCurrentUserName);
   const dispatch = useDispatch();
   const isFormSubmitted = useSelector(selectIsFormSubmitted);
   const submissionError = useSelector(selectSubmissionError);
@@ -50,23 +52,22 @@ const AddItemUser: React.FC = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
-        // עדכון שדה imageUrl ב-react-hook-form state עם ה-Data URL הזמני
-        // זה חשוב כדי שהולידציה של Zod תעבור אם יש תמונה
+    
         setValue('imageUrl', reader.result as string, { shouldValidate: true });
       };
       reader.readAsDataURL(file);
     } else {
       setSelectedFile(null);
       setImagePreview(null);
-      // איפוס שדה imageUrl ב-react-hook-form state כשאין קובץ
-      setValue('imageUrl', '', { shouldValidate: true });
+      
+      setValue('imageUrl',"");
     }
   };
 
   const onSubmit: SubmitHandler<AddItemFormDataZod> = async (data) => {
     console.log('onSubmit function called!');
-    console.log('Form data:', data); // הדפסת הנתונים שהתקבלו מ-react-hook-form
-
+    console.log('Form data:', data);
+   
     if (!homePageid) {
       console.error('לא נמצא מזהה משתמש.');
       dispatch(setSubmissionError('לא נמצא מזהה משתמש.'));
@@ -94,12 +95,13 @@ const AddItemUser: React.FC = () => {
         name: data.name,
         quantity: data.quantity,
         category: data.category,
-        imageUrl: uploadedImageUrl, // שימוש מפורש ב-URL שהתקבל מהשרת
+        imageUrl: uploadedImageUrl, 
       };
 
       await addItem(itemDataToSend).unwrap();
 
       console.log('המוצר נוסף בהצלחה!');
+      
       reset();
       dispatch(resetFormState());
       setSelectedFile(null);
@@ -172,7 +174,7 @@ const AddItemUser: React.FC = () => {
           />
           {/* קלט קובץ לתמונה */}
           <Box sx={{ mt: 2, mb: 1 }}>
-            <InputLabel htmlFor="image-upload-button">תמונה (אופציונלי)</InputLabel>
+            <InputLabel htmlFor="image-upload-button">תמונה </InputLabel>
             <input
               accept="image/*"
               style={{ display: 'none' }}

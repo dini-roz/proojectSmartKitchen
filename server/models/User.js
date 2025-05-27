@@ -36,7 +36,7 @@ const UserSchema = new mongoose.Schema({
     kitchenItems: [{
         itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Item' },
         quantity: Number,
-        category: String
+        name: String
     }],
     shoppingList: [{
         itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Item' },

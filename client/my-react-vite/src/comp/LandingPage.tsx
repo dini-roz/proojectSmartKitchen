@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router';
 
-// אנימציה עדינה לרקע
+
 const gradientAnimation = keyframes`
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -133,7 +133,7 @@ const LandingPage: React.FC = () => {
   return (
     <LandingPageContainer>
       <HeroSection>
-        <MainTitle>הכירו את המטבח החכם שלכם!</MainTitle>
+        <MainTitle>הכירו את המטבח החכם שלכם</MainTitle>
         <SubTitle>ניהול מלא של מוצרי המטבח, רשימות קניות חכמות ועזרה בהכנת מתכונים - הכל במקום אחד.</SubTitle>
         <ActionButtons>
           <MainButton to="/signup">התחברו עכשיו</MainButton>
@@ -163,7 +163,7 @@ const LandingPage: React.FC = () => {
         <CTAHeading>מוכנים לשדרג את המטבח שלכם?</CTAHeading>
         <CTASubTitle>הצטרפו עוד היום ותהנו מחוויית מטבח חכמה ונוחה מאי פעם!</CTASubTitle>
         <MainButton to="/signup" style={{ fontSize: '1.5em', padding: '20px 40px' }}>
-          התחילו עכשיו!
+          התחילו עכשיו
         </MainButton>
       </CallToActionSection>
     </LandingPageContainer>

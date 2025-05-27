@@ -9,12 +9,13 @@ const userRoutes = require("./routes/userRoutes");
 const loginRouter=require("./routes/loginRoutes")
 const itemRouter=require("./routes/itemRouter")
 const imageRoutes=require("./routes/imageRoutes")
+
 const PORT = process.env.PORT || 8888
 index.use(cors());
 index.use(express.json())
  index.use(bodyParser.json());
 
-connectDB()
+ connectDB()
  
 index.use("/api/users", userRoutes);
 index.use("/api/login",loginRouter)

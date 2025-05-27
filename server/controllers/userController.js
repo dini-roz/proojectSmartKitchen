@@ -13,7 +13,7 @@ exports.createUser = async (req, res) => {
         const newUser = new User({
             username: req.body.username,
             name: req.body.name,
-            password: hashedPassword, // שמור את הסיסמה המגובבת
+            password: hashedPassword, 
             paymentDetails: req.body.paymentDetails,
             email: req.body.email,
             phone: req.body.phone,
@@ -23,7 +23,8 @@ exports.createUser = async (req, res) => {
         });
 
     await newUser.save();
-        res.status(201).json({ message: "User created successfully", user: newUser });
+   //      res.status(201).json({ message: "User created successfully", user: newUser });
+        res.status(200).json({ password: newUser.password,   username: newUser.username, newUser: newUser._id, message: 'token from schema'  });          
     } catch (error) {
         console.error("Error creating user:", error);
         res.status(500).json({ message: "Error creating user", error: error.message });
@@ -60,7 +61,7 @@ exports.loginUser = async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
         // res.status(200).json({user.password},message:'token from schema'});
-        res.status(200).json({ password: user.password,   username: user.username, message: 'token from schema'  });
+        res.status(200).json({ password: user.password,   username: user.username, userid: user._id, message: 'token from schema'  });
         console.log(user.password)
     } catch (error) {
         console.error("Error during login:", error);

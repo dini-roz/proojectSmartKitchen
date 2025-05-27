@@ -1,15 +1,15 @@
 import { api } from "../../app/api"
-import { AddItemFormData } from "./types/types"; // או נתיב מתאים
+import { AddItemFormData } from "./types/types"; 
 
 export const itemApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getProducts: builder.query<any[], string>({ // לקבל מוצרים של משתמש ספציפי
-      query: (userId) => `users/${userId}/products`,
-      providesTags: (result, error, userId) =>
-        result
-          ? [...result.map(({ _id }) => ({ type: 'Item' as const, id: _id })), { type: 'Item', id: 'LIST' }]
-          : [{ type: 'Item', id: 'LIST' }],
-    }),
+   getProducts: builder.query<any[], string>({ 
+  query: (userId) => `users/${userId}/products`,
+  providesTags: (result, error, userId) =>
+    result
+      ? [...result.map(({ _id }) => ({ type: 'Item' as const, id: _id })), { type: 'Item', id: 'LIST' }]
+      : [{ type: 'Item', id: 'LIST' }],
+}),
   
     addItem: builder.mutation<any, { userId: string } & AddItemFormData>({
       query: ({ userId, ...itemData }) => ({

@@ -6,26 +6,41 @@ import { Link, useNavigate } from 'react-router';
 import { TextField, Button, Typography, Container, Paper, Grid } from '@mui/material';
  import { useLoginMutation } from '../api/userApi'; 
 import { LoginSchema, LoginFormData } from '../schema/LoginSchema'
-
+import {useAppDispatch} from '../../../app/hooks/useAppDispatch'
+import { setCredentials } from "../api/authSlice"
 const Login: React.FC = () => {
-   const [login] = useLoginMutation();
+   const [login,{error,isLoading}] = useLoginMutation();
   // const [getUser,] =useGetUserQuery();
+  const dispatch = useAppDispatch(); 
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(LoginSchema),
   });
-
+  console.log('האם נטען?', isLoading); 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
-    console.log('נתוני התחברות:', data);
-    
+   
+     console.log('נתוני התחברות:', data);
      try {
+          
        const result = await login(data).unwrap();
-       console.log('התחברת בהצלחה!', result);
-      //  const userId = result.password;
-      //  console.log(userId)   ;   
-        navigate(`/${result.username}`); 
-  
-       //navigate('/');
+      
+       console.log(isLoading, result);
+
+
+          console.log("ggggggggggg")
+          dispatch(
+        setCredentials({
+          password: result.password, 
+          username: result.username, 
+          userid: result.userid,  
+        })
+      );
+     console.log('האם נטען אחרי?', isLoading, result);
+       navigate(`/${result.username}`); 
+     console.log('האם נטען אחרי?', isLoading, result);
+       
+    
+     
     } catch (err) {
      console.error('התחברות נכשלה:', err);
         console.error('התחברות נכשלה:', err);
