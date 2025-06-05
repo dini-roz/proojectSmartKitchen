@@ -6,12 +6,18 @@ import { z } from 'zod';
 import { TextField, Button, Typography, Container, Paper, Grid } from '@mui/material';
 import {useCreateUserMutation} from '../api/userApi'
 import {SignupSchema,SignupFormData } from '../schema/schemaUser'
+import { useAppDispatch } from '../../../app/hooks/useAppDispatch';
+import { selectCurrentUserName, setCredentials } from '../api/authSlice';
+import { useAppSelector } from '../../../app/hooks/useAppSelector';
 const Signup: React.FC = () => {
        const navigate = useNavigate();
+        const dispatch = useAppDispatch(); 
+      
  const [createUser, error ] = useCreateUserMutation();
  const { register, handleSubmit, formState: { errors } } = useForm<SignupFormData>({
     resolver: zodResolver(SignupSchema), 
   });
+   const formModee = useAppSelector(selectCurrentUserName);
     const onSubmit: SubmitHandler<SignupFormData> = async (data) => {
         try {
             console.log("Submitting data:", data);
@@ -26,11 +32,31 @@ const Signup: React.FC = () => {
                     expiryDate: data.expiryDate,
                     CVV: data.CVV,
                 },
+               
            };
-            await createUser(userDataToSend).unwrap();
-            console.log('User created successfully');
-            
-               navigate(`/${data.username}`);
+            const user=  await createUser(userDataToSend).unwrap();
+            console.log("r",user.username)  
+
+               console.log('User created successfully');
+                    dispatch(
+                     setCredentials(
+                        {
+                            profilePicture:user.user.profilePicture,
+                            user_id: user.user.user_id,
+                            username:user.user.username,
+                            name: user.user.name,
+                            password:user.user.password,
+                            paymentDetails:user.user.paymentDetails,
+                            email:user.user.email,
+                            phone: user.user.phone,
+                            kitchenItems:user.user.kitchenItems,
+                            shoppingList:user.user.shoppingList, 
+                            food:user.user.food,
+                        }
+                     )
+                );
+               
+                 navigate(`/${formModee}`);
         } catch (err) {
             console.error('Failed to create user: ',err);
         }

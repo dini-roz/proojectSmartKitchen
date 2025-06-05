@@ -6,26 +6,52 @@ import { Link, useNavigate } from 'react-router';
 import { TextField, Button, Typography, Container, Paper, Grid } from '@mui/material';
  import { useLoginMutation } from '../api/userApi'; 
 import { LoginSchema, LoginFormData } from '../schema/LoginSchema'
-
+import {useAppDispatch} from '../../../app/hooks/useAppDispatch'
+import { selectCurrentUserName, setCredentials } from "../api/authSlice"
+import { useAppSelector } from '../../../app/hooks/useAppSelector';
 const Login: React.FC = () => {
-   const [login] = useLoginMutation();
+   const [login,{error,isLoading}] = useLoginMutation();
   // const [getUser,] =useGetUserQuery();
+  const dispatch = useAppDispatch(); 
   const navigate = useNavigate();
+
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(LoginSchema),
   });
-
+  console.log('האם נטען?', isLoading); 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
-    console.log('נתוני התחברות:', data);
-    
+   
+  console.log('נתוני התחברות לפני שליחה:', data);
      try {
+          
        const result = await login(data).unwrap();
-       console.log('התחברת בהצלחה!', result);
-      //  const userId = result.password;
-      //  console.log(userId)   ;   
-        navigate(`/${result.username}`); 
-  
-       //navigate('/');
+       console.log("ggggggggggg")
+          console.log(isLoading, result);
+        
+          console.log("resalte",result)
+        
+             dispatch(
+              setCredentials({
+                    profilePicture:result.user.profilePicture,
+               user_id: result.user.user_id,
+               username:result.user.username,
+               name: result.user.name,
+               password:result.user.password,
+               paymentDetails:result.user.paymentDetails,
+               email:result.user.email,
+               phone: result.user.phone,
+               kitchenItems:result.user.kitchenItems,
+               shoppingList:result.user.shoppingList, 
+               food:result.user.food,                      
+    })
+      );
+     console.log('האם נטען אחרי?', isLoading, result);
+      
+                   navigate(`/${result.user.username}`);
+     console.log('האם נטען אחרי?', isLoading, result);
+       
+    
+     
     } catch (err) {
      console.error('התחברות נכשלה:', err);
         console.error('התחברות נכשלה:', err);
