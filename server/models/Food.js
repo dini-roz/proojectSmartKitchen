@@ -1,14 +1,31 @@
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
+// const MealSchema = new mongoose.Schema({
+//     name: { type: String, required: true },
+//     ingredients: [{
+//         itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Item' },
+//         quantity:{
+//             count: String,
+//             unit: String,
+//         }
+//     }],
+ 
+// });
+
+// module.exports = mongoose.model('Meal', MealSchema);
+////////////////////////////////////////////////////////////////
+const mongoose = require('mongoose');
+
 const MealSchema = new mongoose.Schema({
     name: { type: String, required: true },
+    imageUrl: { type: String }, // הוסף שדה לכתובת ה-URL של התמונה, אם נדרש
     ingredients: [{
-        itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Item' },
-        quantity:{
-            count: String,
-            unit: String,
+        // itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Item' }, // בחר אם להשאיר קישור ל-Item או להשתמש בשם חופשי
+        itemName: { type: String, required: true }, // הוסף את שם הרכיב
+        quantity: { // השדה הזה תואם כעת ל-quantity בקומפוננטה
+            value: { type: Number, required: true, min: 1 }, // שיניתי את השם ל-value ואת הטיפוס ל-Number
+            unit: { type: String, required: true },
         }
     }],
- 
 });
 
 module.exports = mongoose.model('Meal', MealSchema);

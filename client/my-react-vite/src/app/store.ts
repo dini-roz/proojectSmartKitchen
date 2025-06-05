@@ -1,42 +1,14 @@
-// import { persistStore, persistReducer } from 'redux-persist';
-// import storage from 'redux-persist/lib/storage';
-// import { configureStore } from "@reduxjs/toolkit";
-// import { setupListeners } from "@reduxjs/toolkit/query";
 
-// import { api } from "./api" 
-// import itemFormReducer from '../features/item/itemFormSlice'; 
-// import authSlice from "../features/users/api/authSlice";
-
-// const persistConfig = {
-//   key: 'root',
-//   storage,
-//   whitelist: ['auth'] 
-// };
-// export const store = configureStore({
-//   reducer: {
-//     [api.reducerPath]: api.reducer,
-//     itemForm: itemFormReducer, 
-//     auth:authSlice
-//   },
-
- 
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware().concat(api.middleware),
-// });
-
-// setupListeners(store.dispatch);
-
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppDispatch = typeof store.dispatch;
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
-
+import storage from 'redux-persist/lib/storage'; 
+import authReducer from '../features/users/api/authSlice'; // Your existing auth slice
+import selectedFoodReducer from '../features/comp/selectedFood';
 import { api } from "./api";
 import itemFormReducer from '../features/item/itemFormSlice';
 import authSlice from "../features/users/api/authSlice";
-
+ 
 const persistConfig = {
   key: 'root',
   storage,
@@ -47,6 +19,7 @@ const rootReducer = combineReducers({
   [api.reducerPath]: api.reducer,
   itemForm: itemFormReducer,
   auth: authSlice,
+   selectedFood: selectedFoodReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

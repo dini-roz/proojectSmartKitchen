@@ -5,7 +5,11 @@ const Item = require('../models/Item');
 
 exports. addItemToUser = async (req, res) => {
   const { userId } = req.params;
-  const { name, quantity, imageUrl, category } = req.body;
+   const { name, quantity, imageUrl, category } = req.body;
+//  const { name, quantity, imageUrl, category } = req.body;
+//    if (!quantity || typeof quantity.value !== 'number' || typeof quantity.unit !== 'string') {
+//         return res.status(400).json({ message: 'כמות ויחידת מידה נדרשות וחייבות להיות בפורמט תקין.' });
+//     }
   try {
      const user = await UserSchema.findOne({ username: userId });
     if (!user) {
@@ -14,7 +18,7 @@ exports. addItemToUser = async (req, res) => {
     const existingItemInKitchen =user.kitchenItems.find(item=>item.name===name)
     if(existingItemInKitchen){
       existingItemInKitchen.quantity+=quantity
-     
+     console.log(existingItemInKitchen)
 await user.save()
   try {
                 const itemToUpdate = await Item.findById(existingItemInKitchen.itemId);
@@ -51,7 +55,8 @@ const newItem = new Item({
       userKitchenItem: { 
         itemId: savedItem._id,
         name: savedItem.name,
-        quantity: savedItem.quantity
+        quantity: savedItem.quantity,
+           imageUrl: savedItem.imageUrl, 
       }
     });
     }
@@ -61,6 +66,7 @@ const newItem = new Item({
     res.status(500).json({ message: 'שגיאה בהוספת מוצר' });
   }  
 };
+
 exports.getProducts = async (req, res) => {
     const { userId } = req.params;
   try {
@@ -82,3 +88,93 @@ exports.getProducts = async (req, res) => {
     res.status(500).json({ message: 'שגיאה בטעינת מוצר' });
   }
 };
+exports.deleteProduct = async (req, res) => {
+   
+    const { userId } = req.params;
+   
+    const { productId } = req.params;
+console.log('--- ניסיון מחיקת מוצר ---');
+    console.log('userId שהתקבל ב-URL:', userId);
+    console.log('productId שהתקבל ב-URL:', productId);
+    try {
+               const user = await UserSchema.findOne({ username: userId }); 
+               if (!user) {
+            return res.status(404).json({ message: 'משתמש לא קיים.' });
+        }
+
+          console.log('כל המוצרים במערך kitchenItems של המשתמש:', user.kitchenItems);
+           
+const itemIndex = user.kitchenItems.findIndex(item => item.itemId.toString() === productId);
+             if (itemIndex === -1) {
+            return res.status(404).json({ message: 'המוצר לא נמצא במטבח של המשתמש.' });
+        }
+         user.kitchenItems.splice(itemIndex, 1);
+             await user.save();
+         res.status(200).json({ message: 'המוצר נמחק בהצלחה מהמטבח.' });
+    } catch (error) {
+        console.error('שגיאה במחיקת מוצר:', error);
+        res.status(500).json({ message: 'שגיאה בשרת בעת מחיקת המוצר.' });
+    }
+};
+
+exports.updateKitchenItem = async (req, res) => {
+    try {
+        const { userId, productId } = req.params; 
+        const { name, quantity, imageUrl, category } = req.body;
+
+        const user = await UserSchema.findOne({ username: userId });
+        if (!user) {
+            return res.status(404).json({ message: 'משתמש לא נמצא.' });
+        }
+
+        
+        const itemIndexInUserKitchen = user.kitchenItems.findIndex(item => item.itemId.toString() === productId);
+
+        if (itemIndexInUserKitchen === -1) {
+            return res.status(404).json({ message: 'הפריט לא נמצא במטבח של המשתמש.' });
+        }
+
+        const itemInUserKitchen = user.kitchenItems[itemIndexInUserKitchen];
+
+       
+        if (name !== undefined) {
+            itemInUserKitchen.name = name; 
+        }
+        if (quantity !== undefined) {
+            itemInUserKitchen.quantity = quantity;
+        }
+       
+        await user.save();
+
+      
+        const originalItem = await Item.findById(itemInUserKitchen.itemId);
+        if (originalItem) {
+            if (name !== undefined) {
+                originalItem.name = name;
+            }
+            if (quantity !== undefined) {
+                originalItem.quantity = quantity;
+            }
+            if (imageUrl !== undefined) { // אלו תמיד יעודכנו כאן
+                originalItem.imageUrl = imageUrl;
+            }
+            if (category !== undefined) { // אלו תמיד יעודכנו כאן
+                originalItem.category = category;
+            }
+            await originalItem.save();
+        } else {
+            console.warn(`אזהרה: פריט עם ID ${itemInUserKitchen.itemId} לא נמצא בקולקציית Item אך קיים במטבח של המשתמש ${userId}.`);
+        }
+
+        res.status(200).json({
+            message: 'הפריט עודכן בהצלחה!',
+            updatedUserItem: itemInUserKitchen.toObject(),
+            updatedOriginalItem: originalItem ? originalItem.toObject() : null
+        });
+    } catch (error) {
+        console.error('שגיאה בעדכון מוצר במטבח המשתמש:', error);
+        res.status(500).json({ message: 'שגיאה בשרת בעת עדכון מוצר', error: error.message });
+    }
+};
+
+

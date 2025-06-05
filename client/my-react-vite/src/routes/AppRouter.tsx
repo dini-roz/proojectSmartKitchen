@@ -9,6 +9,7 @@ import Items from "../features/comp/Items"
 import Foods from "../features/comp/Foods"
 import AddItemUser from "../features/item/AddItemUser"
 import { Children } from "react";
+import FoodAvailabilityChecker from "../features/comp/FoodAvailabilityChecker";
 const router = createBrowserRouter([
     { path: "/", element: <LandingPage /> },
     { path: "signup", element: <Signup /> }, 
@@ -27,7 +28,9 @@ const router = createBrowserRouter([
         { path:":homePageid", element: <HomePage /> }, // דף הבית
         { path:"shoppingList", element: <ShoppingList /> }, 
         { path:"items", element: <Items /> },
-        { path:"foods", element: <Foods /> },// נתיב להוספת מוצר
+        { path:"foods", element: <Foods /> },
+         { path:"selectedFood", element: <FoodAvailabilityChecker /> }// נתיב להוספת מוצר
+        
       ],
    
      },
