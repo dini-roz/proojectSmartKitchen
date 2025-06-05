@@ -95,16 +95,10 @@ export const itemApi = api.injectEndpoints({
     }),
      updateProductQuantity: builder.mutation<any, { userId: string, productName: string, newQuantity: number }>({
             query: ({ userId, productName, newQuantity }) => ({
-                // אחת משתי האפשרויות הבאות היא הנכונה:
-                // 1. אם ה-baseUrl שלך ב-app/api/index.ts (או איפה שהגדרת את ה-api) הוא '/api' (או http://localhost:PORT/api)
-                // אז הנתיב כאן צריך להיות רק ההמשך:
+             
                 url: `users/${userId}/kitchen-items/${encodeURIComponent(productName)}`, // השתמש ב-encodeURIComponent
-                
-                // 2. אם ה-baseUrl שלך הוא רק '/' (או http://localhost:PORT)
-                // אז הנתיב כאן צריך לכלול את '/api':
-                // url: `/api/users/${userId}/kitchen-items/${encodeURIComponent(productName)}`, // השתמש ב-encodeURIComponent
-                
-                method: 'PUT',
+                             
+                                method: 'PUT',
                 body: { quantity: newQuantity },
             }),
             invalidatesTags: (result, error, { userId }) => [

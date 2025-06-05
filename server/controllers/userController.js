@@ -251,12 +251,55 @@ exports.addPurchasedItem = async (req, res) => {
 
 // ... (other controller functions)
 
-exports.updateKitchenItemQuantity = async (req, res) => { // <-- Crucial part here!
+// exports.updateKitchenItemQuantity = async (req, res) => { // <-- Crucial part here!
+//     const { userId } = req.params;
+//     const productNameFromParams = req.params.productName;
+//     const normalizedProductName = productNameFromParams.toLowerCase().trim();
+
+//     const { quantity } = req.body;
+
+//     if (typeof quantity !== 'number' || quantity < 0) {
+//         return res.status(400).json({ message: 'כמות לא חוקית.' });
+//     }
+
+//     try {
+//         const user = await User.findOne({ username: userId });
+
+//         if (!user) {
+//             return res.status(404).json({ message: 'משתמש לא נמצא.' });
+//         }
+
+//         const itemIndex = user.kitchenItems.findIndex(item =>
+//             item.name.toLowerCase().trim() === normalizedProductName
+//         );
+
+//         if (itemIndex === -1) {
+//             console.error(`פריט מטבח "<span class="math-inline">\{productNameFromParams\}" \(מנורמל\: "</span>{normalizedProductName}") לא נמצא במלאי המשתמש ${userId}.`);
+//             return res.status(404).json({ message: `פריט המטבח '${productNameFromParams}' לא נמצא במלאי שלך.` });
+//         }
+
+//         user.kitchenItems[itemIndex].quantity = quantity;
+//         await user.save();
+
+//         res.status(200).json({ message: 'כמות המוצר עודכנה בהצלחה.', updatedItem: user.kitchenItems[itemIndex] });
+
+//     } catch (error) {
+//         console.error('שגיאה בעדכון כמות פריט מטבח:', error);
+//         res.status(500).json({ message: 'שגיאה בשרת בעת עדכון כמות פריט מטבח.' });
+//     }
+// };
+
+// // ... (other controller functions)
+// In server/controllers/userController.js
+
+exports.updateKitchenItemQuantity = async (req, res) => {
     const { userId } = req.params;
     const productNameFromParams = req.params.productName;
-    const normalizedProductName = productNameFromParams.toLowerCase().trim();
+    const normalizedProductName = decodeURIComponent(productNameFromParams).toLowerCase().trim();
 
     const { quantity } = req.body;
+
+    console.log(`[SERVER] Received update request for userId: ${userId}, productName: ${productNameFromParams}, normalized: ${normalizedProductName}, newQuantity: ${quantity}`);
 
     if (typeof quantity !== 'number' || quantity < 0) {
         return res.status(400).json({ message: 'כמות לא חוקית.' });
@@ -266,27 +309,31 @@ exports.updateKitchenItemQuantity = async (req, res) => { // <-- Crucial part he
         const user = await User.findOne({ username: userId });
 
         if (!user) {
+            console.error(`[SERVER] User "${userId}" not found.`);
             return res.status(404).json({ message: 'משתמש לא נמצא.' });
         }
+
+        console.log(`[SERVER] User "${userId}" found. Checking their kitchenItems:`);
+        console.log(user.kitchenItems.map(item => ({ name: item.name, quantity: item.quantity }))); // Log kitchen items names
 
         const itemIndex = user.kitchenItems.findIndex(item =>
             item.name.toLowerCase().trim() === normalizedProductName
         );
 
         if (itemIndex === -1) {
-            console.error(`פריט מטבח "<span class="math-inline">\{productNameFromParams\}" \(מנורמל\: "</span>{normalizedProductName}") לא נמצא במלאי המשתמש ${userId}.`);
+            console.error(`[SERVER] Item "${productNameFromParams}" (normalized: "${normalizedProductName}") NOT found in user's kitchenItems.`);
             return res.status(404).json({ message: `פריט המטבח '${productNameFromParams}' לא נמצא במלאי שלך.` });
         }
 
+        console.log(`[SERVER] Item "${productNameFromParams}" found at index ${itemIndex}. Current quantity: ${user.kitchenItems[itemIndex].quantity}. New quantity: ${quantity}`);
         user.kitchenItems[itemIndex].quantity = quantity;
         await user.save();
 
+        console.log(`[SERVER] Successfully updated item "${productNameFromParams}".`);
         res.status(200).json({ message: 'כמות המוצר עודכנה בהצלחה.', updatedItem: user.kitchenItems[itemIndex] });
 
     } catch (error) {
-        console.error('שגיאה בעדכון כמות פריט מטבח:', error);
-        res.status(500).json({ message: 'שגיאה בשרת בעת עדכון כמות פריט מטבח.' });
+        console.error('שגיאה בשרת בעת עדכון כמות פריט מטבח:', error);
+        res.status(500).json({ message: 'שגיאה בשרת בעת עדכון כמות פריט מטבח.', error: error.message });
     }
 };
-
-// ... (other controller functions)
