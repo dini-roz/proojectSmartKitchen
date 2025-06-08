@@ -6,10 +6,7 @@ const Item = require('../models/Item');
 exports. addItemToUser = async (req, res) => {
   const { userId } = req.params;
    const { name, quantity, imageUrl, category } = req.body;
-//  const { name, quantity, imageUrl, category } = req.body;
-//    if (!quantity || typeof quantity.value !== 'number' || typeof quantity.unit !== 'string') {
-//         return res.status(400).json({ message: 'כמות ויחידת מידה נדרשות וחייבות להיות בפורמט תקין.' });
-//     }
+
   try {
      const user = await UserSchema.findOne({ username: userId });
     if (!user) {
@@ -155,10 +152,10 @@ exports.updateKitchenItem = async (req, res) => {
             if (quantity !== undefined) {
                 originalItem.quantity = quantity;
             }
-            if (imageUrl !== undefined) { // אלו תמיד יעודכנו כאן
+            if (imageUrl !== undefined) {
                 originalItem.imageUrl = imageUrl;
             }
-            if (category !== undefined) { // אלו תמיד יעודכנו כאן
+            if (category !== undefined) { 
                 originalItem.category = category;
             }
             await originalItem.save();

@@ -35,20 +35,7 @@ const UserSchema = new mongoose.Schema({
     },
       profilePicture  : String,
     kitchenItems: [
-    //      {
-    //   itemId: { // עבור שגיאת ה-Populate
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Item', // שם המודל של המוצרים הכלליים
-    //     required: true 
-    //   },
-    //   name: { type: String, required: true },
-    //   quantity: { // זה חייב להיות אובייקט משובץ
-    //     value: { type: Number, required: true }, // ולידציה על value
-    //     unit: { type: String, required: true }   // ולידציה על unit
-    //   },
-    //   imageUrl: { type: String },
-    //   category: { type: String, required: true },
-    // }
+   
     {
         itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Item' },
         quantity: Number,
@@ -64,9 +51,9 @@ const UserSchema = new mongoose.Schema({
         // mealId: { type: mongoose.Schema.Types.ObjectId, ref: 'Food' }
          
           mealId: { type: mongoose.Schema.Types.ObjectId, ref: 'Food' },
-            name: { type: String, required: true }, // Store name for easy access/display
-            imageUrl: { type: String }, // Store image URL for easy access/display
-            // You might want to store more details here if needed, or just rely on populate
+            name: { type: String, required: true },
+            imageUrl: { type: String },
+          
     
     }]
 });

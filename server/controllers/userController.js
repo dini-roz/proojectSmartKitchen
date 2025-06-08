@@ -131,27 +131,27 @@ exports.getShoppingList = async (req, res) => {
   }
 };
 exports.deleteShoppingListItem = async (req, res) => {
-    const { userId, itemId } = req.params; // userId כאן הוא ה-username, itemId הוא ה-_id של הפריט
+    const { userId, itemId } = req.params;
 
     try {
-        const user = await User.findOne({ username: userId }); // מציאת משתמש לפי username
+        const user = await User.findOne({ username: userId }); 
 
         if (!user) {
             return res.status(404).json({ message: 'משתמש לא נמצא.' });
         }
 
-        // מציאת אינדקס הפריט ברשימת הקניות לפי ה-_id שלו
-        const initialLength = user.shoppingList.length; // אורך לפני מחיקה
+ 
+        const initialLength = user.shoppingList.length; 
         user.shoppingList = user.shoppingList.filter(
-            (item) => item._id && item._id.toString() !== itemId // מסנן החוצה את הפריט עם ה-_id התואם
+            (item) => item._id && item._id.toString() !== itemId 
         );
 
-        // בדיקה אם פריט אכן נמחק
+   
         if (user.shoppingList.length === initialLength) {
             return res.status(404).json({ message: 'פריט ברשימת הקניות לא נמצא.' });
         }
 
-        await user.save(); // שמירת המשתמש המעודכן
+        await user.save();
 
         res.status(200).json({ message: 'הפריט נמחק בהצלחה מרשימת הקניות.', itemId });
 
@@ -247,50 +247,7 @@ exports.addPurchasedItem = async (req, res) => {
         res.status(500).json({ message: 'שגיאה בשרת בעת הוספת פריט שנרכש.', error: error.message });
     }
 };
-// server/controllers/userController.js
 
-// ... (other controller functions)
-
-// exports.updateKitchenItemQuantity = async (req, res) => { // <-- Crucial part here!
-//     const { userId } = req.params;
-//     const productNameFromParams = req.params.productName;
-//     const normalizedProductName = productNameFromParams.toLowerCase().trim();
-
-//     const { quantity } = req.body;
-
-//     if (typeof quantity !== 'number' || quantity < 0) {
-//         return res.status(400).json({ message: 'כמות לא חוקית.' });
-//     }
-
-//     try {
-//         const user = await User.findOne({ username: userId });
-
-//         if (!user) {
-//             return res.status(404).json({ message: 'משתמש לא נמצא.' });
-//         }
-
-//         const itemIndex = user.kitchenItems.findIndex(item =>
-//             item.name.toLowerCase().trim() === normalizedProductName
-//         );
-
-//         if (itemIndex === -1) {
-//             console.error(`פריט מטבח "<span class="math-inline">\{productNameFromParams\}" \(מנורמל\: "</span>{normalizedProductName}") לא נמצא במלאי המשתמש ${userId}.`);
-//             return res.status(404).json({ message: `פריט המטבח '${productNameFromParams}' לא נמצא במלאי שלך.` });
-//         }
-
-//         user.kitchenItems[itemIndex].quantity = quantity;
-//         await user.save();
-
-//         res.status(200).json({ message: 'כמות המוצר עודכנה בהצלחה.', updatedItem: user.kitchenItems[itemIndex] });
-
-//     } catch (error) {
-//         console.error('שגיאה בעדכון כמות פריט מטבח:', error);
-//         res.status(500).json({ message: 'שגיאה בשרת בעת עדכון כמות פריט מטבח.' });
-//     }
-// };
-
-// // ... (other controller functions)
-// In server/controllers/userController.js
 
 exports.updateKitchenItemQuantity = async (req, res) => {
     const { userId } = req.params;

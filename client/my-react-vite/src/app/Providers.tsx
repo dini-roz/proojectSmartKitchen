@@ -1,24 +1,10 @@
-// import { Provider } from 'react-redux';
-// import {store} from './store'
-// import {RouterProvider} from 'react-router'
-// import router from "../routes/AppRouter"
-// const Providers = () => {
-//   return (
-//    <>
-//     <Provider store={store}>
-//     <RouterProvider router={router} />
-//     </Provider>
-//    </>
-//     )
-//   };
-  
-//   export default Providers;
+
   import React from 'react';
 import { Provider } from 'react-redux';
-import { store, persistor } from './store'; // ייבא גם את persistor
+import { store, persistor } from './store'; 
 import { RouterProvider } from 'react-router';
 import router from "../routes/AppRouter";
-import { PersistGate } from 'redux-persist/integration/react'; // ייבא את PersistGate
+import { PersistGate } from 'redux-persist/integration/react'; 
 
 const Providers = () => {
   return (

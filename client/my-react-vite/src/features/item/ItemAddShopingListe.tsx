@@ -26,18 +26,18 @@ const ItemAddShopingListe: React.FC = () => {
  const {    data: shopingg, refetch: refetchShoping } = useGetShoppingListQuery(   `${homePageid}`);
   const onSubmit: SubmitHandler<AddShoppingListItemFormData> = async (data) => {
     if (!userName) {
-      // במקרה של שגיאה כזו, ייתכן שתרצי לנתב למסך התחברות או להציג הודעה קבועה.
+  
       console.error('שגיאה: לא נמצא מזהה משתמש. אנא התחבר מחדש.');
       return;
     }
 
     try {
-      // נניח שה-API מקבל userId בנוסף לשם וכמות
+   
    const shoping=     await addShoppingListItem({ userId: userName, ...data }).unwrap();
    console.log(shoping)
 
 
-      reset(); // איפוס הטופס לאחר הצלחה
+      reset(); 
     if (shoping!=null)  {
      const sohp=  await refetchShoping().unwrap()
         console.log("fff")
@@ -47,14 +47,14 @@ const ItemAddShopingListe: React.FC = () => {
 
     }
     } catch (err) {
-      // RTK Query כבר מטפל בשגיאה ושם אותה ב-`error`
+  
       console.error("שגיאה בסאבמיט של רשימת קניות:", err);
     }
   
   };
  
 
-  // פונקציית עזר להצגת הודעת שגיאה מפורטת
+
   const getErrorMessage = (err: any): string => {
     if (!err) return 'אירעה שגיאה בלתי צפויה.';
     if ('data' in err && typeof err.data === 'object' && 'message' in err.data) {
@@ -103,13 +103,13 @@ const ItemAddShopingListe: React.FC = () => {
             variant="contained"
             color="primary"
             sx={{ mt: 3, py: 1.5 }}
-            disabled={isLoading} // שימוש ישיר ב-isLoading
+            disabled={isLoading} 
             startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : null}
           >
             {isLoading ? 'מוסיף...' : 'הוסף לרשימה'}
           </Button>
 
-          {/* הודעות חיווי למשתמש - שימוש ישיר ב-isSuccess/isError */}
+      
           {isSuccess && (
             <Alert severity="success" sx={{ mt: 2 }}>
               המוצר נוסף בהצלחה לרשימת הקניות!

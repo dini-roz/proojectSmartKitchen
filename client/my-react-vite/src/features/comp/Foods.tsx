@@ -10,7 +10,7 @@ import { string } from 'zod';
 import { useAppDispatch } from '../../app/hooks/useAppDispatch';
 
 
-//const MOCK_USER_ID = 'eeeeeee'; 
+
 
 const Foods: React.FC = () => {
  const foodlist = useAppSelector(updeteKitchenFood);
@@ -31,7 +31,7 @@ const Foods: React.FC = () => {
       alert('המאכל נמחק בהצלחה!');
         const updatedShoppingData = await refetchfood().unwrap();
                     // dispatch(useUpdateFoodMutation(updatedShoppingData)); 
-                    // // רענן את רשימת המאכלים לאחר המחיקה
+                  
                     dispatch(updeteKitchenFoods(updatedShoppingData))
     } catch (err) {
       console.error('שגיאה במחיקת מאכל:', err);
@@ -39,23 +39,7 @@ const Foods: React.FC = () => {
     }
   };
 
-//   if (isLoading) {
-//     return (
-//       <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-//         <CircularProgress />
-//         <Typography variant="h6" sx={{ ml: 2 }}>טוען מאכלים...</Typography>
-//       </Box>
-//     );
-//   }
 
-//   if (error) {
-//     console.error("שגיאה בטעינת מאכלים:", error);
-//     return (
-//       <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-//         <Typography color="error" variant="h6">שגיאה בטעינת המאכלים. נסה שוב מאוחר יותר.</Typography>
-//       </Box>
-//     );
-//   }
 
   if (!foodlist || foodlist.length === 0) {
     return (

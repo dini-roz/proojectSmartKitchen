@@ -13,7 +13,7 @@ exports.  updateKitchenItemsFromMeal = async (userId, ingredients) => {
         for (const ingredient of ingredients) {
             const { itemName, quantity, unit } = ingredient;
 
-            // Check if the item already exists in the user's kitchen
+         
             const existingKitchenItem = user.kitchenItems.find(
                 item => item.name === itemName
             );
@@ -29,16 +29,15 @@ exports.  updateKitchenItemsFromMeal = async (userId, ingredients) => {
                     user.kitchenItems.push({
                         name: itemName,
                         quantity: { value: quantity.value, unit: unit },
-                        // imageUrl and category would be tricky here unless you have an Item model for ingredients
+                      
                     });
                 }
             } else {
-                // If the item doesn't exist, add it to kitchenItems
+     
                 user.kitchenItems.push({
                     name: itemName,
                     quantity: { value: quantity.value, unit: unit },
-                    // You might need to fetch imageUrl and category from a global Item collection if available,
-                    // or leave them undefined if ingredients are just names and quantities for meals.
+                 
                 });
             }
         }
@@ -50,17 +49,17 @@ exports.  updateKitchenItemsFromMeal = async (userId, ingredients) => {
 };
 
 
-// --- Add Food (Meal) to a User ---
+
 exports.addFoodToUser = async (req, res) => {
     const { userId } = req.params;
     const { name, imageUrl, ingredients } = req.body;
 
-    // Validate incoming data
+  
     if (!name || !Array.isArray(ingredients) || ingredients.length === 0) {
         return res.status(400).json({ message: 'שם המאכל ורכיבים נדרשים.' });
     }
 
-    // Validate ingredients structure
+  
     for (const ingredient of ingredients) {
         if (!ingredient.itemName || !ingredient.quantity || typeof ingredient.quantity.value !== 'number' || !ingredient.quantity.unit) {
             return res.status(400).json({ message: 'כל רכיב חייב לכלול שם, כמות ויחידת מידה תקינים.' });
@@ -73,8 +72,8 @@ exports.addFoodToUser = async (req, res) => {
             return res.status(404).json({ message: 'משתמש לא נמצא.' });
         }
 
-        // Create the new meal
-        const newMeal = new Foodd({ // ודא ש-'Foodd' הוא שם המודל הנכון למאכלים שלך
+      
+        const newMeal = new Foodd({ 
             name,
             imageUrl,
             ingredients: ingredients.map(ing => ({
@@ -114,14 +113,14 @@ exports.getAllFoodForUser = async (req, res) => {
     try {
         const user = await User.findOne({ username: userId }).populate({
             path: 'food.mealId',
-            model: 'Meal' // Specify the model name for population
+            model: 'Meal'
         });
 
         if (!user) {
             return res.status(404).json({ message: 'משתמש לא נמצא.' });
         }
 
-        // Map the populated meals to a cleaner structure if needed
+     
         const userMeals = user.food.map(userMeal => {
             if (userMeal.mealId) {
                 return {
@@ -145,7 +144,7 @@ exports.getAllFoodForUser = async (req, res) => {
 
 
 exports.deleteFoodFromUser = async (req, res) => {
-    const { userId, foodId } = req.params; // foodId here refers to the Meal document's _id
+    const { userId, foodId } = req.params; 
 
     try {
         const user = await User.findOne({ username: userId });
@@ -153,7 +152,7 @@ exports.deleteFoodFromUser = async (req, res) => {
             return res.status(404).json({ message: 'משתמש לא נמצא.' });
         }
 
-        // Remove the meal reference from the user's meals array
+     
         const initialMealsCount = user.food.length;
         user.food = user.food.filter(meal => meal.mealId.toString() !== foodId);
 
@@ -163,10 +162,7 @@ exports.deleteFoodFromUser = async (req, res) => {
 
         await user.save();
 
-        // Optionally, delete the actual Meal document if no other user references it
-        // This logic can be complex for shared meals. For simplicity, we'll just delete it
-        // if this user is the only one who might have created it, or if it's fine to delete globally.
-        // For a more robust solution, you might count references or make meals shared.
+        
         await Foodd.findByIdAndDelete(foodId);
         console.log(`Meal document with ID ${foodId} deleted.`);
 
@@ -178,9 +174,9 @@ exports.deleteFoodFromUser = async (req, res) => {
     }
 };
 
-// --- Update Food (Meal) for a User ---
+
 exports.updateFoodForUser = async (req, res) => {
-    const { userId, foodId } = req.params; // foodId refers to the Meal document's _id
+    const { userId, foodId } = req.params; 
     const { name, imageUrl, ingredients } = req.body;
 
     try {
@@ -189,27 +185,27 @@ exports.updateFoodForUser = async (req, res) => {
             return res.status(404).json({ message: 'משתמש לא נמצא.' });
         }
 
-        // Find the meal entry in the user's array
+       
         const userMealEntry = user.meals.find(meal => meal.mealId.toString() === foodId);
         if (!userMealEntry) {
             return res.status(404).json({ message: 'המאכל לא נמצא ברשימת המאכלים של המשתמש.' });
         }
 
-        // Update the actual Meal document
+       
         const updatedMeal = await Foodd.findByIdAndUpdate(
             foodId,
             { name, imageUrl, ingredients },
-            { new: true, runValidators: true } // Return the updated document and run schema validators
+            { new: true, runValidators: true }
         );
 
         if (!updatedMeal) {
             return res.status(404).json({ message: 'המאכל לא נמצא במסד הנתונים.' });
         }
 
-        // Update the cached data in the user's meals array if needed (optional, as we populate)
+       
         userMealEntry.name = updatedMeal.name;
         userMealEntry.imageUrl = updatedMeal.imageUrl;
-        await user.save(); // Save user to update any cached meal info
+        await user.save();
 
         res.status(200).json({
             message: 'המאכל עודכן בהצלחה!',

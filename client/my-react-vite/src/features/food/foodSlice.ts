@@ -40,7 +40,7 @@ const foodSlice = createSlice({
 export const { setFood, epose } = foodSlice.actions;
 
 export default foodSlice.reducer
-import { RootState } from '../../app/store'; // Make sure this path is correct for your RootState
+import { RootState } from '../../app/store'; 
 
 export const selectSelectedFoodItem = (state: RootState) => state.selectedFood;
 

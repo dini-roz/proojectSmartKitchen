@@ -15,21 +15,14 @@ const router = createBrowserRouter([
     { path: "signup", element: <Signup /> }, 
     { path: "login", element: <Login /> }, 
      {
-        // element: <UserAppLayout/>, // רכיב מגן שישמש ליתר הניתובים רק לאחר הרשמה/כניסה
-        // children: [
-        //     { path:":homePageid", element: <HomePage />,
-              
-
-        //      } // דף הבית
-             
-        // ],
-         element: <UserAppLayout/>, // רכיב מגן שישמש ליתר הניתובים רק לאחר הרשמה/כניסה
+       
+         element: <UserAppLayout/>, 
       children: [
-        { path:":homePageid", element: <HomePage /> }, // דף הבית
+        { path:":homePageid", element: <HomePage /> }, 
         { path:"shoppingList", element: <ShoppingList /> }, 
         { path:"items", element: <Items /> },
         { path:"foods", element: <Foods /> },
-         { path:"selectedFood", element: <FoodAvailabilityChecker /> }// נתיב להוספת מוצר
+         { path:"selectedFood", element: <FoodAvailabilityChecker /> }
         
       ],
    

@@ -2,7 +2,7 @@
 
 
 import { useState } from "react";
-import { Button, Grid, Typography, Container, Box, CssBaseline } from "@mui/material"; // הוספתי CssBaseline
+import { Button, Grid, Typography, Container, Box, CssBaseline } from "@mui/material";
 import AddItemUser from '../item/AddItemUser';
 import { useAppSelector } from '../../app/hooks/useAppSelector';
 import { selectCurrentUserName, selectShoppingList } from '../users/api/authSlice';
@@ -31,52 +31,52 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    // Box חיצוני שימלא את כל המסך וירכז את התוכן
+  
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column', // סדר את הפריטים בעמודה
-        justifyContent: 'center', // מרכז אנכית
-        alignItems: 'center', // מרכז אופקית
-        minHeight: '100vh', // ודא שיתפרס על כל גובה המסך
-        width: '100vw', // ודא שיתפרס על כל רוחב המסך
-        // רקע לבן נקי כפי שרצית
-        backgroundColor: '#f5f5f5', // גוון לבן מעט שבור (אפור בהיר מאוד)
-        p: 2 // ריפוד קטן מסביב לכל הקומפוננטה
+        flexDirection: 'column', 
+        justifyContent: 'center',
+        alignItems: 'center', 
+        minHeight: '100vh', 
+        width: '100vw', 
+       
+        backgroundColor: '#f5f5f5', 
+        p: 2 
       }}
     >
-      <CssBaseline /> {/* איפוס CSS בסיסי לדפדפנים */}
+      <CssBaseline />
 
-      {/* הקונטיינר המרכזי עם התוכן */}
+      
       <Container
         maxWidth="md"
         sx={{
-          backgroundColor: '#ffffff', // רקע לבן נקי לתוכן עצמו
-          borderRadius: 3, // פינות מעוגלות
-          p: 4, // ריפוד פנימי
-          boxShadow: 6, // צל עמוק יותר לבולטות
-          textAlign: 'center', // מרכז את הטקסטים בתוך הקונטיינר
-          minWidth: { xs: '90%', sm: '70%', md: '50%' } // רוחב מינימלי בנקודות שבירה שונות
+          backgroundColor: '#ffffff',
+          borderRadius: 3, 
+          p: 4, 
+          boxShadow: 6, 
+          textAlign: 'center',
+          minWidth: { xs: '90%', sm: '70%', md: '50%' } 
         }}
       >
-        {/* כיתוב "שלום ל- username" במרכז */}
+        
         <Typography variant="h3" component="h1" gutterBottom sx={{ color: '#2c3e50', fontWeight: 'bold' }}>
           שלום ל- {userName}!
         </Typography>
-        {/* כיתוב "ברוך הבא לרובוט המטבחי שלך!" במרכז */}
+       
         <Typography variant="h5" component="p" sx={{ mb: 4, color: '#7f8c8d' }}>
           ברוך הבא לרובוט המטבחי החכם שלך!
         </Typography>
 
-        {/* כפתורים רוחביים במרכז */}
+     
         <Grid container spacing={2} justifyContent="center" sx={{ mb: 4 }}>
-          <Grid > {/* הגדלתי את רוחב הכפתורים מעט */}
+          <Grid >
             <Button
               variant="contained"
               color="primary"
               fullWidth
               onClick={() => handleShowComponent('addItem')}
-              sx={{ height: 60, fontSize: '1.1rem', borderRadius: 2 }} // פינות מעוגלות לכפתורים
+              sx={{ height: 60, fontSize: '1.1rem', borderRadius: 2 }}
             >
               הוספת מוצר
             </Button>
@@ -105,20 +105,20 @@ const HomePage: React.FC = () => {
           </Grid>
         </Grid>
 
-        {/* כפתור חיפוש מוצר באמצע, מתחת לכפתורים האחרים */}
+      
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
           <Button
             variant="contained"
             color="secondary"
             onClick={() => handleShowComponent('productSearch')}
-            sx={{ width: 'auto', minWidth: 220, height: 60, fontSize: '1.2rem', borderRadius: 2 }} // כפתור חיפוש גדול ובולט יותר
+            sx={{ width: 'auto', minWidth: 220, height: 60, fontSize: '1.2rem', borderRadius: 2 }} 
           >
             איזה מאכל תכין הייום?
             תכתוב את שם המאכל המבוקש:
           </Button>
         </Box>
 
-        {/* הצגת הקומפוננטה הרצויה */}
+        
         {showAddItem && <AddItemUser />}
         {showAddFood && <AddFoodUser />}
         {showShoppingList && <ItemAddShopingListe />}

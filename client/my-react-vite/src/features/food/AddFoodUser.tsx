@@ -110,25 +110,32 @@ const AddFoodUser: React.FC = () => {
       },
       // itemId: ing.itemId // אם קיים ונדרש
     }));
+      // const foodSlice = {
+      //   userId: homePageid,
+      //   name: data.name,
+      //   ingredients: transformedIngredients,
+      //    imageUrl: uploadedImageUrl, // Ensure imageUrl is passed to addFood
+      // };
       const foodSlice = {
-        userId: homePageid,
-        name: data.name,
-        ingredients: transformedIngredients,//data.ingredients,
-        imageUrl: uploadedImageUrl, // Ensure imageUrl is passed to addFood
-      };
+  userId: homePageid,
+  name: data.name,
+  ingredients: transformedIngredients, 
+  imageUrl: uploadedImageUrl, 
+};
+
 
       const food = await addFood(foodSlice).unwrap();
       dispatch(
         setFood({
           name: food.name,
-          imageUrl: food.imageUrl, // Corrected typo here, assuming your API returns 'imageUrl'
+          imageUrl: food.imageUrl, 
           ingredients: food.ingredients,
         })
       );
       console.log("המאכל נוסף בהצלחה!");
       setSelectedFile(null);
       setImagePreview(null);
-      reset(); // Reset the form fields, including the ingredient array
+      reset();
       
      if (food != null) {
        const allFoodForUser = await refetchfood().unwrap();
@@ -247,7 +254,7 @@ const AddFoodUser: React.FC = () => {
             </Box>
           ))}
           <Button
-            type="button" // Important: set type to "button" to prevent form submission
+            type="button"
             variant="outlined"
             onClick={() => append({ itemName: "", quantity: 1, unit: "גרם" })}
             startIcon={<AddIcon />}

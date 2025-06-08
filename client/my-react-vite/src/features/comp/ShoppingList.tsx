@@ -13,22 +13,22 @@ import {
     Divider,
     styled,
     IconButton,
-    CircularProgress, // ייבוא עבור טעינה
+    CircularProgress,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import EmailIcon from '@mui/icons-material/Email';
-import DoneAllIcon from '@mui/icons-material/DoneAll'; // אייקון חדש
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { useAppSelector } from '../../app/hooks/useAppSelector';
 import { selectCurrentUserName, selectShoppingList, updeteShopingliste } from '../users/api/authSlice';
 import { useAddPurchasedItemMutation, useDeleteShoppingListItemMutation, useGetShoppingListQuery,  } from '../item/itemApi '; // ייבוא ה-mutation החדש
 import { useAppDispatch } from '../../app/hooks/useAppDispatch';
 
-// --- סטיילינג (ללא שינוי) ---
+
 const CenteredContainer = styled(Container)(({ theme }) => ({
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'flex-start', // שינוי ל-flex-start כדי שהתוכן יתחיל מלמעלה
+    alignItems: 'flex-start', 
     minHeight: '100vh',
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
@@ -123,7 +123,7 @@ const ShoppingListItems: React.FC = () => {
         if (window.confirm('האם אתה בטוח שרכשת את כל הפריטים ברשימה?')) {
             try {
                 for (const item of shoppingList) {
-                    // 1. הוספת המוצר לרשימת המוצרים שנרכשו
+                  
                     await addPurchasedItem({
                         userId: userid,
                         name: item.name,
@@ -134,7 +134,7 @@ const ShoppingListItems: React.FC = () => {
                    await deleteShoppingListItem({ userId: userid, itemId: item._id }).unwrap();
                 }
 
-                // 3. רענון רשימת הקניות לאחר הסיום
+              
                 const updatedShoppingData = await refetchShoping().unwrap();
                 dispatch(updeteShopingliste(updatedShoppingData));
                 alert('כל הפריטים סומנו כנרכשו והועברו בהצלחה!');
@@ -146,7 +146,7 @@ const ShoppingListItems: React.FC = () => {
     };
 
     let content;
-    // console.log(shoppingList); // נשאיר את זה לבדיקה כללית של הרשימה
+  
 
     if (!shoppingList || shoppingList.length === 0) {
         content = (
@@ -159,9 +159,7 @@ const ShoppingListItems: React.FC = () => {
             <Box sx={{ width: '100%' }}>
                 <List disablePadding>
                     {shoppingList.map((item: any, index: number) => {
-                        // זה המקום לבדוק את ה-ID של כל פריט
-                        // console.log(`פריט ברשימה (אינדקס ${index}):`, item);
-                        // console.log(`_id של פריט באינדקס ${index}:`, item._id);
+                    
 
                         return (
                             <React.Fragment key={item._id || index}>
@@ -221,7 +219,7 @@ const ShoppingListItems: React.FC = () => {
                         color="success" // צבע ירוק לכפתור "קניתי"
                         startIcon={<DoneAllIcon />}
                         onClick={handleMarkAsPurchased}
-                        disabled={isAddingPurchased || isDeleting || shoppingList.length === 0} // מנוטרל בזמן פעולה או אם הרשימה ריקה
+                        disabled={isAddingPurchased || isDeleting || shoppingList.length === 0} 
                         sx={{ padding: '10px 20px', borderRadius: '8px' }}
                     >
                         {isAddingPurchased ? <CircularProgress size={24} color="inherit" /> : 'קניתי את המוצרים'}

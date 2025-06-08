@@ -182,14 +182,14 @@ const Items: React.FC = () => {
         }
     }, [editDialog.open]);
 
-    // **חדש: useEffect לטיפול בפוקוס לאחר סגירת דיאלוג הודעה**
+   
     useEffect(() => {
-        if (!dialog.open) { // כאשר דיאלוג ההודעה נסגר
+        if (!dialog.open) { 
             const timer = setTimeout(() => {
                 if (lastFocusedEditButtonRef.current) {
                     lastFocusedEditButtonRef.current.focus();
                 }
-            }, 100); // השהייה קצרה של 100ms
+            }, 100); 
             return () => clearTimeout(timer);
         }
     }, [dialog.open]);
@@ -197,7 +197,7 @@ const Items: React.FC = () => {
 
     const handleCloseDialog = () => {
         setDialog(prev => ({ ...prev, open: false }));
-        // הפוקוס יטופל ב-useEffect החדש
+     
     };
 
     const handleDelete = async (productId: string, productName: string) => {

@@ -30,10 +30,10 @@ export const foodApi=api.injectEndpoints({
         updateFood: builder.mutation<any, { userId: string; foodId: string; foodData: Partial<AddFoodFormData> }>({
             query: ({ userId, foodId, foodData }) => ({
                 url: `users/${userId}/foods/${foodId}`,
-                method: 'PUT', // או 'PATCH' תלוי איך השרת שלך מטפל בעדכונים חלקיים/מלאים
+                method: 'PUT', 
                 body: foodData,
             }),
-            // invalidateTags גם לרשימה וגם לפריט הספציפי שהשתנה
+      
             invalidatesTags: (result, error, { foodId }) => [{ type: 'Food', id: foodId }, { type: 'Food', id: 'LIST' }],
         }),
     }),

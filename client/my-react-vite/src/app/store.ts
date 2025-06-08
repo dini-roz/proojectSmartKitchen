@@ -3,7 +3,7 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; 
-import authReducer from '../features/users/api/authSlice'; // Your existing auth slice
+import authReducer from '../features/users/api/authSlice'; 
 import selectedFoodReducer from '../features/comp/selectedFood';
 import { api } from "./api";
 import itemFormReducer from '../features/item/itemFormSlice';
